@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="style.css" />
+        <title>Budget Builder</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="earnings-container">
+                <h2>Earnings</h2>
+                <label for="net" class="label">Net Monthly Earnings</label>
+                <input type="number" class="input" id="net" min="0" data-foo="true" />
+            </div>
+            <div class="allocation-container">
+                <h2>Allocations</h2>
+                <p>Enter the percentage amounts for each category of spending</p>
+				<table>
+				<tr>
+				<th>Expenses</th>
+				<th>Discretionary</th>
+				<th>Savings</th>
+				</tr>
+				<tr>
+				<td><input type="number" class="input" id="expenseAllo" min="0" value="50" data-base="true" /></td>
+				<td><input type="number" class="input" id="discretionaryAllo" min="0" value="30" data-base="true"/></td>
+				<td><input type="number" class="input" id="savingsAllo" min="0" value="20" data-base="true" /></td>
+								 
+				</tr>
+				</table>
+            </div>
+            <div class="budget-container">
+                <h2>Budget</h2>
+                <table>
+                    <tr>
+                        <th>Category</th>
+                        <th>Amount</th>
+                    </tr>
+                    <tr>
+                        <td>Expenses</td>
+                        <td class="budget" id="expenseBudget">$0</td>
+                    </tr>
+                    <tr>
+                        <td>Discretionary</td>
+                        <td class="budget" id="discretionaryBudget">$0</td>
+                    </tr>
+                    <tr>
+                        <td>Savings</td>
+                        <td class="budget" id="savingsBudget">$0</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="spending-container">
+                <h2>Spending</h2>
+                <table>
+                    <tr>
+                        <th>Category</th>
+                        <th>Amount</th>
+						<th>Difference</th>
+                    </tr>
+                    <tr>
+                        <td>Expenses</td>
+                        <td class="budget" id="expenseSpent">$0</td>
+						<td class="budget" id="expenseDiff">$0</td>
+                    </tr>
+                    <tr>
+                        <td>Discretionary</td>
+                        <td class="budget" id="discretionarySpent">$0</td>
+						<td class="budget" id="discretionaryDiff">$0</td>
+                    </tr>
+                    <tr>
+                        <td>Savings</td>
+                        <td class="budget" id="savingsSpent">$0</td>
+						<td class="budget" id="savingsDiff">$0</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="transaction-container" id="transaction-container">
+			<h2>Transaction Log</h2>
+			<button id="btn-add" class="add-btn">+</button>
+                </div>
+                </div>
+        <script src="app.js"></script>
+    </body>
+</html>
+ 
