@@ -1,251 +1,199 @@
-// Variables
-
-const net = document.querySelector('#net');
+const net = document.querySelector('#monthlyNet');
 const expenseAllo = document.querySelector('#expenseAllo');
 const discretionaryAllo = document.querySelector('#discretionaryAllo');
 const savingsAllo = document.querySelector('#savingsAllo');
-const expenseBudget = document.querySelector('#expenseBudget');
-const discretionaryBudget = document.querySelector('#discretionaryBudget');
-const savingsBudget = document.querySelector('#savingsBudget');
-const expenseSpent = document.querySelector('#expenseSpent');
-const discretionarySpent = document.querySelector('#discretionarySpent');
-const savingsSpent = document.querySelector('#savingsSpent');
-const expenseDiff = document.querySelector('#expenseDiff');
-const discretionaryDiff = document.querySelector('#discretionaryDiff');
-const savingsDiff = document.querySelector('#savingsDiff');
+const spdExpenseBdg = document.querySelector('#spdExpensesBdg');
+const spdDiscretionaryBdg = document.querySelector('#spdDiscretionaryBdg');
+const spdSavingsBdg = document.querySelector('#spdSavingsBdg');
+const anchorDiv = document.querySelector('#anchorDiv');
 
-// Event Handler on page load
+let expenseAmt = 0;
+let discretionaryAmt = 0;
+let savingsAmt = 0;
 
-document.addEventListener('input', eventHandler);
-document.addEventListener('click', eventHandler);
+document.addEventListener('input', inputHandler);
+document.addEventListener('click', clickHandler);
 
-function eventHandler(e) {
-  const { target } = e;
+function inputHandler() {
   switch (true) {
-    case target.dataset.btnType === 'enter':
-      enterTransaction(e);
-      break;
-    case target.dataset.btnType === 'delete':
-      deleteTransaction(e);
-      break;
-    case target.tagName === 'BUTTON':
-      createTransaction();
-      break;
-    case target.tagName === 'INPUT':
-      calcBudget();
-      break;
-    case target.tagName === 'SELECT':
-      changeColor();
+    case net.value > 0:
+      displayAmts();
       break;
     default:
   }
 }
 
-class Transaction {
-  constructor(id, category, description, amount) {
-    this.id = id;
-    this.category = category;
-    this.description = description;
-    this.amount = amount;
+function clickHandler(e) {
+  switch (true) {
+    case e.target.id === 'addTransBtn':
+      new TransactionElement();
+      break;
+    case e.target.dataset.role === 'enter':
+      enterTransaction(e);
+      displayAmts();
+      break;
+    case e.target.dataset.role === 'delete':
+      deleteTransaction(e);
+      displayAmts();
+      break;
+    default:
   }
 }
 
-// Globals
+class TransactionElement {
+  constructor() {
+    this.div1 = document.createElement('div');
+    this.div2 = document.createElement('div');
+    this.div3 = document.createElement('div');
+    this.div4 = document.createElement('div');
+    this.div5 = document.createElement('div');
+    this.select = document.createElement('select');
+    this.option1 = document.createElement('option');
+    this.option2 = document.createElement('option');
+    this.option3 = document.createElement('option');
+    this.input1 = document.createElement('input');
+    this.input2 = document.createElement('input');
+    this.button1 = document.createElement('button');
+    this.button2 = document.createElement('button');
 
-const transactionLog = [];
-const expenseItems = [];
-const discretionaryItems = [];
-const savingsItems = [];
-const selects = [];
-let expenseBudgetAmt = 0;
-let discretionaryBudgetAmt = 0;
-let savingsBudgetAmt = 0;
-let transactionLogCounter = 0;
+    this.div1.className = 'row border rounded-2 p-2 m-2 bg-dark';
+    this.div2.className = 'col-4';
+    this.div3.className = 'col';
+    this.div4.className = 'col-2';
+    this.div5.className = 'col-1 d-flex justify-content-around';
+    this.select.className = 'form-select form-select-sm';
+    this.input1.className = 'form-control form-control-sm';
+    this.input2.className = 'form-control form-control-sm';
+    this.button1.className = 'btn btn-sm bg-success text-light';
+    this.button2.className = 'btn btn-sm bg-danger text-light';
 
-// Functions
+    this.select.ariaLabel = 'category';
 
-function changeColor() {
-  selects.forEach((item) => {
-    switch (true) {
-      case item.value === 'expense':
-        item.parentElement.className = 'transaction-subcontainer-red';
-        break;
-      case item.value === 'discretionary':
-        item.parentElement.className = 'transaction-subcontainer-orange';
-        break;
-      case item.value === 'savings':
-        item.parentElement.className = 'transaction-subcontainer-yellow';
-        break;
-      default:
-    }
-  });
-}
+    this.option1.value = 'expense';
+    this.option1.innerText = 'Expense';
+    this.option2.value = 'discretionary';
+    this.option2.innerText = 'Discretionary';
+    this.option3.value = 'savings';
+    this.option3.innerText = 'Savings';
 
-function calcBudget() {
-  expenseBudgetAmt =
-    Math.round(+net.value * (expenseAllo.value * 0.01) * 100) / 100;
-  discretionaryBudgetAmt =
-    Math.round(+net.value * (discretionaryAllo.value * 0.01) * 100) / 100;
-  savingsBudgetAmt =
-    Math.round(+net.value * (savingsAllo.value * 0.01) * 100) / 100;
-  expenseBudget.innerText = `$${expenseBudgetAmt}`;
-  discretionaryBudget.innerText = `$${discretionaryBudgetAmt}`;
-  savingsBudget.innerText = `$${savingsBudgetAmt}`;
+    this.input1.type = 'text';
+    this.input1.placeholder = 'Description';
+    this.input2.type = 'number';
+    this.input2.placeholder = '$';
+    this.button1.type = 'button';
+    this.button1.innerText = '\u2713';
+    this.button1.dataset.role = 'enter';
+    this.button2.type = 'button';
+    this.button2.innerText = 'X';
+    this.button2.dataset.role = 'delete';
+
+    anchorDiv.append(this.div1);
+    this.div1.append(this.div2);
+    this.div2.append(this.select);
+    this.select.append(this.option1);
+    this.select.append(this.option2);
+    this.select.append(this.option3);
+    this.div1.append(this.div3);
+    this.div3.append(this.input1);
+    this.div1.append(this.div4);
+    this.div4.append(this.input2);
+    this.div1.append(this.div5);
+    this.div5.append(this.button1);
+    this.div5.append(this.button2);
+  }
 }
 
 function enterTransaction(e) {
-  const foo = e.target.parentElement.children;
-  const transactionItems = [foo[1], foo[2], foo[3]];
-
-  transactionItems.forEach((item) => {
-    item.disabled = true;
-  });
-
-  const entry = new Transaction(
-    transactionLogCounter,
-    foo[1].value,
-    foo[2].value,
-    foo[3].value
-  );
-  transactionLog.push(entry);
-
-  calcExpenses();
-  calcDiscretionaries();
-  calcSavings();
-}
-
-function calcExpenses() {
-  const expenses = transactionLog.filter(
-    (transaction) => transaction.category === 'expense'
-  );
-
-  if (expenses.length > 0) {
-    expenses.forEach((transaction) => expenseItems.push(+transaction.amount));
-    let expenseSum = 0;
-    for (const expense of expenseItems) {
-      expenseSum += expense;
-    }
-    expenseSpent.innerText = `$${expenseSum}`;
-    expenseDiff.innerText = `$${expenseBudgetAmt - expenseSum}`;
-
-    expenseSum = 0;
-    expenses.splice(0, expenses.length);
-    expenseItems.splice(0, expenseItems.length);
-  } else {
-    expenseSpent.innerText = '$0';
-    expenseDiff.innerText = '$0';
+  switch (true) {
+    case e.target.parentElement.parentElement.children[0].children[0].value ===
+      'expense':
+      e.target.parentElement.parentElement.children[0].children[0].disabled = true;
+      e.target.parentElement.parentElement.children[1].children[0].disabled = true;
+      e.target.parentElement.parentElement.children[2].children[0].disabled = true;
+      e.target.parentElement.parentElement.children[3].children[0].disabled = true;
+      expenseAmt +=
+        +e.target.parentElement.parentElement.children[2].children[0].value;
+      break;
+    case e.target.parentElement.parentElement.children[0].children[0].value ===
+      'discretionary':
+      e.target.parentElement.parentElement.children[0].children[0].disabled = true;
+      e.target.parentElement.parentElement.children[1].children[0].disabled = true;
+      e.target.parentElement.parentElement.children[2].children[0].disabled = true;
+      e.target.parentElement.parentElement.children[3].children[0].disabled = true;
+      discretionaryAmt +=
+        +e.target.parentElement.parentElement.children[2].children[0].value;
+      break;
+    case e.target.parentElement.parentElement.children[0].children[0].value ===
+      'savings':
+      e.target.parentElement.parentElement.children[0].children[0].disabled = true;
+      e.target.parentElement.parentElement.children[1].children[0].disabled = true;
+      e.target.parentElement.parentElement.children[2].children[0].disabled = true;
+      e.target.parentElement.parentElement.children[3].children[0].disabled = true;
+      savingsAmt +=
+        +e.target.parentElement.parentElement.children[2].children[0].value;
+      break;
+    default:
   }
-}
-
-function calcDiscretionaries() {
-  const discretionaries = transactionLog.filter(
-    (transaction) => transaction.category === 'discretionary'
-  );
-
-  if (discretionaries.length > 0) {
-    discretionaries.forEach((transaction) =>
-      discretionaryItems.push(+transaction.amount)
-    );
-    let discretionarySum = 0;
-    for (const discretionary of discretionaryItems) {
-      discretionarySum += discretionary;
-    }
-    discretionarySpent.innerText = `$${discretionarySum}`;
-    discretionaryDiff.innerText = `$${
-      discretionaryBudgetAmt - discretionarySum
-    }`;
-
-    discretionarySum = 0;
-    discretionaries.splice(0, discretionaries.length);
-    discretionaryItems.splice(0, discretionaryItems.length);
-  } else {
-    discretionarySpent.innerText = '$0';
-    discretionaryDiff.innerText = '$0';
-  }
-}
-
-function calcSavings() {
-  const savings = transactionLog.filter(
-    (transaction) => transaction.category === 'savings'
-  );
-
-  if (savings.length > 0) {
-    savings.forEach((transaction) => savingsItems.push(+transaction.amount));
-    let savingsSum = 0;
-    for (const saving of savingsItems) {
-      savingsSum += saving;
-    }
-    savingsSpent.innerText = `$${savingsSum}`;
-    savingsDiff.innerText = `$${savingsBudgetAmt - savingsSum}`;
-
-    savingsSum = 0;
-    savings.splice(0, savings.length);
-    savingsItems.splice(0, savingsItems.length);
-  } else {
-    savingsSpent.innerText = '$0';
-  }
-}
-
-function createTransaction() {
-  const div = document.createElement('div');
-  div.className = 'transaction-subcontainer';
-  div.id = 'transaction-subcontainer';
-  const eyeDee = document.createElement('p');
-  eyeDee.innerText = transactionLogCounter;
-  const selectCategory = document.createElement('select');
-  selectCategory.name = 'category';
-  selectCategory.className = 'input';
-  selectCategory.id = 'category';
-  const option1 = document.createElement('option');
-  option1.value = 'expense';
-  option1.innerText = 'Expense';
-  const option2 = document.createElement('option');
-  option2.value = 'discretionary';
-  option2.innerText = 'Discretionary';
-  const option3 = document.createElement('option');
-  option3.value = 'savings';
-  option3.innerText = 'Savings';
-  const input1 = document.createElement('input');
-  input1.type = 'text';
-  input1.className = 'input';
-  input1.id = 'desc';
-  input1.placeholder = 'description';
-  const input2 = document.createElement('input');
-  input2.type = 'text';
-  input2.className = 'input';
-  input2.id = 'amount';
-  input2.placeholder = '$';
-  const button1 = document.createElement('button');
-  button1.dataset.btnType = 'enter';
-  button1.className = 'btn';
-  button1.innerText = '\u2714';
-  const button2 = document.createElement('button');
-  button2.dataset.btnType = 'delete';
-  button2.className = 'btn';
-  button2.innerText = '\u2716';
-
-  document.querySelector('#transaction-container').appendChild(div);
-  div.appendChild(eyeDee);
-  div.appendChild(selectCategory);
-  selectCategory.appendChild(option1);
-  selectCategory.appendChild(option2);
-  selectCategory.appendChild(option3);
-  div.appendChild(input1);
-  div.appendChild(input2);
-  div.appendChild(button1);
-  div.appendChild(button2);
-
-  selects.push(selectCategory);
-  changeColor();
-  transactionLogCounter += 1;
 }
 
 function deleteTransaction(e) {
-  const { target } = e;
-  const targetID = e.target.parentElement.children[0].innerText;
-  transactionLog.pop(targetID);
-  calcExpenses();
-  calcDiscretionaries();
-  calcSavings();
-  target.parentElement.remove();
+  switch (true) {
+    case e.target.parentElement.parentElement.children[0].children[0].value ===
+      'expense':
+      e.target.parentElement.parentElement.remove();
+      expenseAmt -=
+        +e.target.parentElement.parentElement.children[2].children[0].value;
+      break;
+    case e.target.parentElement.parentElement.children[0].children[0].value ===
+      'discretionary':
+      e.target.parentElement.parentElement.remove();
+      discretionaryAmt -=
+        +e.target.parentElement.parentElement.children[2].children[0].value;
+      break;
+    case e.target.parentElement.parentElement.children[0].children[0].value ===
+      'savings':
+      e.target.parentElement.parentElement.remove();
+      savingsAmt -=
+        +e.target.parentElement.parentElement.children[2].children[0].value;
+      break;
+    default:
+  }
+}
+
+function calcExpenseBudget() {
+  return net.value * (expenseAllo.value / 100);
+}
+
+function calcDiscretionaryBudget() {
+  return net.value * (discretionaryAllo.value / 100);
+}
+
+function calcSavingsBudget() {
+  return net.value * (savingsAllo.value / 100);
+}
+
+function displayAmts() {
+  const expenseBdg = calcExpenseBudget();
+  const discretionaryBdg = calcDiscretionaryBudget();
+  const savingsBdg = calcSavingsBudget();
+
+  spdExpenseBdg.innerText = `$${expenseBdg}`;
+  spdDiscretionaryBdg.innerText = `$${discretionaryBdg}`;
+  spdSavingsBdg.innerText = `$${savingsBdg}`;
+
+  document.querySelector('#spdExpenseAmt').innerText = `$${expenseAmt}`;
+  document.querySelector(
+    '#spdDiscretionaryAmt'
+  ).innerText = `$${discretionaryAmt}`;
+  document.querySelector('#spdSavingsAmt').innerText = `$${savingsAmt}`;
+
+  document.querySelector('#spdExpenseDiff').innerText = `$${
+    expenseBdg - expenseAmt
+  }`;
+  document.querySelector('#spdDiscretionaryDiff').innerText = `$${
+    discretionaryBdg - discretionaryAmt
+  }`;
+  document.querySelector('#spdSavingsDiff').innerText = `$${
+    savingsBdg - savingsAmt
+  }`;
 }
