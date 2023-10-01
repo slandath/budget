@@ -57,10 +57,12 @@ class TransactionElement {
     this.button2 = document.createElement('button');
 
     this.div1.className = 'row border rounded-2 p-2 m-2 bg-dark';
-    this.div2.className = 'col-4';
-    this.div3.className = 'col';
-    this.div4.className = 'col-2';
-    this.div5.className = 'col-1 d-flex justify-content-around';
+    this.div2.className = 'col-lg-4 col-md-3 col-sm-6 col-6';
+    this.div3.className = 'col-lg col-md-5 col-sm-6 col-6';
+    this.div4.className =
+      'col-lg-2 col-md-2 col-sm-6 col-6 mt-lg-0 mt-md-0 mt-sm-1 mt-1';
+    this.div5.className =
+      'col-lg-1 col-md-2 col-sm-2 col-2 mt-lg-0 mt-md-0 mt-sm-1 mt-1 d-flex justify-content-between';
     this.select.className = 'form-select form-select-sm';
     this.input1.className = 'form-control form-control-sm';
     this.input2.className = 'form-control form-control-sm';
