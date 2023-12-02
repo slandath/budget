@@ -1,9 +1,9 @@
-import Entry from './components/Entry';
+import Earnings from "./components/Earnings";
 
 function App() {
   return (
     <>
-      
+      <Earnings />
     </>
   );
 }
