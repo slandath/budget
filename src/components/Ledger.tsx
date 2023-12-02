@@ -5,9 +5,9 @@ import Breakdown from './Breakdown';
 function Ledger(props: any) {
   const [transactions, setTransactions] = useState<any>([]);
   const [entryCounter, setEntryCounter] = useState<number>(0);
-  const [expensesSpent, setExpensesSpent] = useState<number>(0)
-  const [discretionarySpent, setDiscretionarySpent] = useState<number>(0)
-  const [savingsSpent, setSavingsSpent] = useState<number>(0)
+  const [expensesSpent, setExpensesSpent] = useState<number>(0);
+  const [discretionarySpent, setDiscretionarySpent] = useState<number>(0);
+  const [savingsSpent, setSavingsSpent] = useState<number>(0);
 
   function clickHandler() {
     setEntryCounter(entryCounter + 1);
@@ -28,23 +28,12 @@ function Ledger(props: any) {
       case transaction.category === 'savings':
         setSavingsSpent(savingsSpent + transaction.amount);
         break;
-        default:
+      default:
     }
-  }
+  };
 
   return (
     <div>
-      <h2 className="title is-3">Transactions</h2>
-      <div className="block">
-        <button className="button is-info" onClick={clickHandler}>
-          Add
-        </button>
-      </div>
-      <div className="block">
-        {transactions.map((transaction, index) => (
-          <Entry key={index} id={transaction.id} callback={spent}/>
-        ))}
-      </div>
       <Breakdown
         expenses={props.expenses}
         discretionary={props.discretionary}
@@ -53,6 +42,17 @@ function Ledger(props: any) {
         discretionarySpent={discretionarySpent}
         savingsSpent={savingsSpent}
       />
+      <h2 className="title is-3 mt-3">Transactions</h2>
+      <div className="block">
+        <button className="button is-info" onClick={clickHandler}>
+          Add
+        </button>
+      </div>
+      <div className="block">
+        {transactions.map((transaction, index) => (
+          <Entry key={index} id={transaction.id} callback={spent} />
+        ))}
+      </div>
     </div>
   );
 }
