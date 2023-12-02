@@ -67,7 +67,11 @@ function Budget(props: { gross: number }) {
           />
         </div>
       </div>
-      <Ledger expenses={expensesAmount} discretionary={discretionaryAmount} savings={savingsAmount}/>
+      <Ledger
+        expenses={expensesAmount}
+        discretionary={discretionaryAmount}
+        savings={savingsAmount}
+      />
     </div>
   );
 }
