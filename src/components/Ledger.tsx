@@ -1,7 +1,7 @@
 interface MyProps {
 expenses: number,
 discretionary: number,
-savings: number,
+savings: number
 }
 
 import { useState } from 'react';
