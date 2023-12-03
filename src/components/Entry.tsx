@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function Entry({ callback }) {
+function Entry({callback}) {
   const [entryAmount, setEntryAmount] = useState<number>(0);
   const [entryDescription, setEntryDescription] = useState<string>('');
   const [entryCategory, setEntryCategory] = useState<string>('expense');
@@ -13,7 +13,7 @@ function Entry({ callback }) {
   function descriptionHandler(e: React.ChangeEvent<HTMLInputElement>) {
     setEntryDescription(e.target.value);
   }
-  function categoryHandler(e: React.ChangeEvent<HTMLInputElement>) {
+  function categoryHandler(e: React.ChangeEvent<HTMLSelectElement>) {
     setEntryCategory(e.target.value);
   }
 

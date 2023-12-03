@@ -1,23 +1,31 @@
+interface MyProps {
+expenses: number,
+discretionary: number,
+savings: number,
+}
+
 import { useState } from 'react';
 import Entry from './Entry';
 import Breakdown from './Breakdown';
 
-function Ledger(props: any) {
-  const [transactions, setTransactions] = useState<any>([]);
-  const [entryCounter, setEntryCounter] = useState<number>(0);
+function Ledger(props: MyProps) {
+  const [transactions, setTransactions] = useState([{
+    category: "",
+    amount: 0
+  }]);
   const [expensesSpent, setExpensesSpent] = useState<number>(0);
   const [discretionarySpent, setDiscretionarySpent] = useState<number>(0);
   const [savingsSpent, setSavingsSpent] = useState<number>(0);
 
   function clickHandler() {
-    setEntryCounter(entryCounter + 1);
     const newTransaction = {
-      id: entryCounter,
-    };
+      category: "",
+      amount: 0
+    }
     setTransactions([...transactions, newTransaction]);
   }
 
-  const spent = (transaction) => {
+  const spent = (transaction: {category: string; amount: number}) => {
     switch (true) {
       case transaction.category === 'expense':
         setExpensesSpent(expensesSpent + transaction.amount);
@@ -49,8 +57,8 @@ function Ledger(props: any) {
         </button>
       </div>
       <div className="block">
-        {transactions.map((transaction, index) => (
-          <Entry key={index} id={transaction.id} callback={spent} />
+        {transactions.map(() => (
+          <Entry callback={spent} />
         ))}
       </div>
     </div>
