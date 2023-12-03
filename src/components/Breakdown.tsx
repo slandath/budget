@@ -1,4 +1,13 @@
-function Breakdown(props: any) {
+interface MyProps {
+expenses: number,
+discretionary: number,
+savings: number,
+expensesSpent: number,
+discretionarySpent: number,
+savingsSpent: number
+}
+
+function Breakdown(props: MyProps) {
 
   return (
     <div>
