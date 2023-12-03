@@ -1,142 +1,17 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
-  <link rel="icon" href='./images/ledger.png'>
-  <title>Budget Builder</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <title>Budget App</title>
 </head>
 
-<body class="bg-dark-subtle">
-  <div class="container mt-2">
-    <div class="row align-items-start">
-      <!--Earnings-->
-      <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
-        <div class="border rounded-2 p-3 bg-white">
-          <h2>Earnings</h2>
-          <label for="monthlyNet" class="form-label">Net Monthly Earnings</label>
-          <input type="number" class="form-control" id="monthlyNet" aria-describedby="earningsHelp" placeholder="$" />
-          <div id="earningsHelp" class="form-text">
-            Net is the amount after deductions and taxes.
-          </div>
-        </div>
-      </div>
-      <!--Allocations-->
-      <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
-        <div class="border rounded-2 p-3 bg-white">
-          <h2>Allocations</h2>
-          <div class="row">
-            <div class="col">
-              <label for="expenseAllo" class="form-label">Expenses</label>
-              <input type="number" class="form-control" id="expenseAllo" placeholder="%"
-                aria-describedby="allocationsHelp" />
-            </div>
-            <div class="col">
-              <label for="discretionaryAllo" class="form-label">Discretionary</label>
-              <input type="number" class="form-control" id="discretionaryAllo" placeholder="%" />
-            </div>
-            <div class="col">
-              <label for="savingsAllo" class="form-label">Savings</label>
-              <input type="number" class="form-control" id="savingsAllo" placeholder="%" />
-            </div>
-            <div id="allocationsHelp" class="form-text">
-              Allocations must add up to 100%
-            </div>
-          </div>
-        </div>
-      </div>
-      <!--Spending-->
-      <div class="col-sm col-md col-lg-12 mb-2">
-        <div class="border rounded-2 p-3 bg-white">
-          <h2>Spending</h2>
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Category</th>
-                <th scope="col">Budget</th>
-                <th scope="col">Spent</th>
-                <th scope="col">Difference</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Expenses</td>
-                <td id="spdExpensesBdg"></td>
-                <td id="spdExpenseAmt"></td>
-                <td id="spdExpenseDiff"></td>
-              </tr>
-              <tr>
-                <td>Discretionary</td>
-                <td id="spdDiscretionaryBdg"></td>
-                <td id="spdDiscretionaryAmt"></td>
-                <td id="spdDiscretionaryDiff"></td>
-              </tr>
-              <tr>
-                <td>Savings</td>
-                <td id="spdSavingsBdg"></td>
-                <td id="spdSavingsAmt"></td>
-                <td id="spdSavingsDiff"></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <!--Transactions-->
-      <div class="col-sm col-md-12 col-lg-12">
-        <div class="border rounded-2 p-3 bg-white mb-2" id="anchorDiv">
-          <div class="row">
-            <div class="col">
-              <h2>Transactions</h2>
-            </div>
-            <div class="col d-flex justify-content-end">
-              <button type="button" class="btn btn-sm btn-secondary" id="addTransBtn">
-                Add
-              </button>
-            </div>
-          </div>
-          <!---
-            <div class="row border rounded-2 p-2 m-1 bg-warning">
-              <div class="col-2">
-                <select
-                  class="form-select form-select-sm"
-                  aria-label="category"
-                >
-                  <option value="expense">Expense</option>
-                  <option value="discretionary">Discretionary</option>
-                  <option value="savings">Savings</option>
-                </select>
-              </div>
-              <div class="col">
-                <input
-                  type="text"
-                  class="form-control form-control-sm"
-                  placeholder="Description"
-                />
-              </div>
-              <div class="col-2">
-                <input
-                  type="number"
-                  class="form-control form-control-sm"
-                  placeholder="$"
-                />
-              </div>
-              <div class="col-1 d-flex justify-content-around">
-                <button type="button" class="btn btn-sm bg-success text-light" data-role="enter">&#2713;</button>
-                 <button type="button" class="btn btn-sm bg-danger text-light" data-role="enter">X</button>
-              </div>
-            </div>
-          -->
-        </div>
-      </div>
-    </div>
-  </div>
-  <script src="app.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-    crossorigin="anonymous"></script>
+<body>
+  <div id="root" style="background-color: hsla(0, 0%, 75%, 1);"></div>
+  <script type="module" src="/src/main.tsx"></script>
 </body>
 
 </html>
