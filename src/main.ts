@@ -1,4 +1,12 @@
-const endpoint = import.meta.env.VITE_APIURL
+const getEndpoint = import.meta.env.VITE_GETAPIURL
+const postEndpoint = import.meta.env.VITE_POSTAPIURL
+const form = document.querySelector('form')!;
+
+// Event Listeners
+form?.addEventListener("submit", function(e) {
+  formSubmit(e,postEndpoint)
+})
+
 
 async function getData(url: string) {
   try {
@@ -32,4 +40,17 @@ async function renderData(url: string) {
   }
 }
 
-renderData(endpoint);
+async function formSubmit(e: Event, url: string) {
+e.preventDefault();
+const formData = new FormData(form)
+try {
+  const response = await fetch(url, {
+    method: "POST", 
+    body: formData})
+    const data = await response.json();
+    console.log(data)
+} catch (error) {
+  (console.error("Error: ", error))
+}
+}
+renderData(getEndpoint);
