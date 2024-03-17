@@ -1,5 +1,5 @@
 const getEndpoint = import.meta.env.VITE_GETAPIURL;
-const postEndpoint = import.meta.env.VITE_POSTAPIURL
+const postEndpoint = import.meta.env.VITE_POSTAPIURL;
 
 const formEl: HTMLFormElement = document.querySelector("#form")!;
 
@@ -35,17 +35,24 @@ async function renderData(url: string) {
   }
 }
 
-formEl.addEventListener("submit", function(event) {
+formEl.addEventListener("submit", async function (event) {
   event.preventDefault();
   const formData = new FormData(formEl);
-  const data = Object.fromEntries(formData);
-  fetch(postEndpoint, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-});
+  const content = Object.fromEntries(formData);
+  try {
+      const response = await fetch(postEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(content),
+      });
+      if (response.ok) {
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error('There was an error: ', error)
+    }
+  })
 
 renderData(getEndpoint);
