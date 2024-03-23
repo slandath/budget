@@ -10,7 +10,8 @@
 
 <body>
   <div id="app">
-    <table id="table" style="border: 1px solid black">
+    <h2>All Expenses</h2>
+    <table id="allTable" style="border: 1px solid black">
       <thead>
         <tr>
           <th>Category</th>
@@ -18,11 +19,18 @@
           <th>Amount</th>
         </tr>
       </thead>
-      <tbody id="start">
+      <tbody id="allTableStart">
       </tbody>
     </table>
-  </div>
-  <div>
+    <div id="categories">
+      <h2>Expenses</h2>
+      <div id="expensesTable"></div>
+      <h2>Discretionary</h2>
+      <div id="discretionaryTable"></div>
+      <h2>Savings</h2>
+      <div id="savingsTable"></div>
+    </div>
+    <h2>Enter Items</h2>
     <form method="POST" name="form" id="form">
       <label for="category">Category</label>
       <select name="category">
