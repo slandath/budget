@@ -17,9 +17,13 @@ async function getAllData(url: string) {
 
 async function renderAllData(url: string) {
   const data = await getAllData(url);
+  let total = 0
   for (let i = 0; i < data.length; i++) {
     const start = document.querySelector("#allTableStart");
     const row = document.createElement("tr");
+    const totalContainer = document.createElement("td")
+    const totalAmount = document.createElement("td")
+    const deleteBtn = document.createElement("button")
     row.id = i.toString();
     start?.appendChild(row);
     const category = document.createElement("td");
@@ -28,9 +32,12 @@ async function renderAllData(url: string) {
     category.textContent = data[i].category;
     description.textContent = data[i].description;
     amount.textContent = data[i].amount;
+    total += data[i].amount
+    deleteBtn.textContent = "Delete"
     row?.appendChild(category);
     row?.appendChild(description);
     row?.appendChild(amount);
+    row?.appendChild(deleteBtn)
   }
 }
 
