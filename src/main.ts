@@ -21,8 +21,6 @@ async function renderAllData(url: string) {
   for (let i = 0; i < data.length; i++) {
     const start = document.querySelector("#allTableStart");
     const row = document.createElement("tr");
-    const totalContainer = document.createElement("td")
-    const totalAmount = document.createElement("td")
     const deleteBtn = document.createElement("button")
     row.id = i.toString();
     start?.appendChild(row);
