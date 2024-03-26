@@ -1,8 +1,9 @@
 const getEndpoint = import.meta.env.VITE_GETAPIURL;
 const postEndpoint = import.meta.env.VITE_POSTAPIURL;
-const deleteEndpoint = import.meta.env.VITE_DELETEAPIURL
+const deleteEndpoint = import.meta.env.VITE_DELETEAPIURL;
 const formEl: HTMLFormElement = document.querySelector("#form")!;
 
+// Get All Data
 async function getAllData(url: string) {
   try {
     const response = await fetch(url);
@@ -16,8 +17,21 @@ async function getAllData(url: string) {
   }
 }
 
-async function renderAllData(url: string) {
-  const data = await getAllData(url);
+// Cache data in session storage
+async function getCachedData() {
+  let cachedData = sessionStorage.getItem("cachedData");
+  if (cachedData) {
+    return JSON.parse(cachedData);
+  } else {
+    const data = await getAllData(getEndpoint);
+    sessionStorage.setItem("cachedData", JSON.stringify(data));
+    return data;
+  }
+}
+
+// Render data from cache
+async function renderAllData() {
+  const data = await getCachedData();
   for (let i = 0; i < data.length; i++) {
     const start = document.querySelector("#allTableStart");
     const row = document.createElement("tr");
@@ -27,26 +41,29 @@ async function renderAllData(url: string) {
     const category = document.createElement("td");
     const description = document.createElement("td");
     const amount = document.createElement("td");
-    const id = document.createElement("td")
+    const id = document.createElement("td");
     id.textContent = data[i].id;
     category.textContent = data[i].category;
     description.textContent = data[i].description;
     amount.textContent = data[i].amount;
     deleteBtn.textContent = "Delete";
-    row?.appendChild(id)
+    row?.appendChild(id);
     row?.appendChild(category);
     row?.appendChild(description);
     row?.appendChild(amount);
     row?.appendChild(deleteBtn);
-    deleteBtn.addEventListener("click", function() {
-      deleteItem(deleteEndpoint, data[i].id)
+    deleteBtn.addEventListener("click", function () {
+      const item = {
+        id: this.parentElement?.childNodes[0].textContent
+      }
+      deleteItem(deleteEndpoint, item);
     });
   }
 }
 
-async function renderCategoryFilter(category: string, id: string, url: string) {
+async function renderCategoryFilter(category: string, id: string) {
   // HTML Table Elements
-  const filteredData = await categoryFilter(category, url);
+  const filteredData = await categoryFilter(category);
   const start = document.querySelector(id);
   const table = document.createElement("table");
   const tableHead = document.createElement("thead");
@@ -82,8 +99,8 @@ async function renderCategoryFilter(category: string, id: string, url: string) {
   }
 }
 
-async function categoryFilter(category: string, url: string) {
-  const data = await getAllData(url);
+async function categoryFilter(category: string) {
+  const data = await getCachedData();
   const filteredData = data.filter((item: any) => item.category === category);
   return filteredData;
 }
@@ -101,7 +118,8 @@ formEl.addEventListener("submit", async function (event) {
       body: JSON.stringify(content),
     });
     if (response.ok) {
-      window.location.reload();
+      sessionStorage.clear();
+      refresh();
     }
   } catch (error) {
     console.error("There was an error: ", error);
@@ -118,14 +136,26 @@ async function deleteItem(url: string, content: any) {
       body: JSON.stringify(content),
     });
     if (response.ok) {
-      window.location.reload();
+      sessionStorage.clear();
+      refresh();
     }
   } catch (error) {
     console.error("There was an error: ", error);
   }
 }
 
-renderAllData(getEndpoint);
-renderCategoryFilter("expense", "#expensesTable", getEndpoint);
-renderCategoryFilter("discretionary", "#discretionaryTable", getEndpoint);
-renderCategoryFilter("savings", "#savingsTable", getEndpoint);
+async function onLoad() {
+  await renderAllData();
+  await renderCategoryFilter("expense", "#expensesTable");
+  await renderCategoryFilter("discretionary", "#discretionaryTable");
+  await renderCategoryFilter("savings", "#savingsTable");
+}
+
+async function refresh() {
+  await getCachedData();
+  window.location.reload();
+}
+
+onLoad();
+
+
