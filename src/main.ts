@@ -36,25 +36,22 @@ async function renderAllData() {
     const start = document.querySelector("#allTableStart");
     const row = document.createElement("tr");
     const deleteBtn = document.createElement("button");
-    row.id = i.toString();
+    row.id = data[i].id.toString();
     start?.appendChild(row);
     const category = document.createElement("td");
     const description = document.createElement("td");
     const amount = document.createElement("td");
-    const id = document.createElement("td");
-    id.textContent = data[i].id;
     category.textContent = data[i].category;
     description.textContent = data[i].description;
     amount.textContent = data[i].amount;
     deleteBtn.textContent = "Delete";
-    row?.appendChild(id);
     row?.appendChild(category);
     row?.appendChild(description);
     row?.appendChild(amount);
     row?.appendChild(deleteBtn);
     deleteBtn.addEventListener("click", function () {
       const item = {
-        id: this.parentElement?.childNodes[0].textContent
+        id: this.parentElement?.id
       }
       deleteItem(deleteEndpoint, item);
     });
