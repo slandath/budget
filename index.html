@@ -6,12 +6,48 @@
   <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Monthly Budget</title>
+  <style>
+    body {
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+
+    table {
+      border: 1px solid black;
+      border-radius: 3px;
+      text-align: left;
+      border-collapse: collapse;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    td {
+      border: 1px solid black;
+    }
+
+    .padding {
+      padding: 3rem;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto;
+      max-width: min-content;
+    }
+
+    .flex {
+      display: flex;
+    }
+  </style>
 </head>
 
 <body>
-  <div id="app">
+  <div id="app" class="container">
     <h2>All Expenses</h2>
-    <table id="allTable" style="border: 1px solid black">
+
+    <table id="allTable">
       <thead>
         <tr>
           <th>Category</th>
@@ -22,13 +58,16 @@
       <tbody id="allTableStart">
       </tbody>
     </table>
-    <div id="categories">
-      <h2>Expenses</h2>
-      <div id="expensesTable"></div>
-      <h2>Discretionary</h2>
-      <div id="discretionaryTable"></div>
-      <h2>Savings</h2>
-      <div id="savingsTable"></div>
+    <div id="categories" class="flex">
+      <div id="expensesTable">
+        <h2>Expenses</h2>
+      </div>
+      <div id="discretionaryTable">
+        <h2>Discretionary</h2>
+      </div>
+      <div id="savingsTable">
+        <h2>Savings</h2>
+      </div>
     </div>
     <h2>Enter Items</h2>
     <form method="POST" name="form" id="form">

@@ -78,7 +78,6 @@ async function renderCategoryFilter(category: string, id: string) {
   table?.appendChild(tableBody);
 
   // Set Attributes and Text
-  table.setAttribute("style", "border: 1px solid black");
   column1.textContent = "Description";
   column2.textContent = "Amount";
 
