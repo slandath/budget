@@ -1,6 +1,7 @@
 const getEndpoint = import.meta.env.VITE_GETAPIURL;
 const postEndpoint = import.meta.env.VITE_POSTAPIURL;
 const deleteEndpoint = import.meta.env.VITE_DELETEAPIURL;
+const categoryEndpoint = import.meta.env.VITE_CATEGORYURL;
 const formEl: HTMLFormElement = document.querySelector("#form")!;
 
 // Get All Data
@@ -24,7 +25,7 @@ async function getCachedData() {
     return JSON.parse(cachedData);
   } else {
     const data = await getAllData(getEndpoint);
-    sessionStorage.setItem("cachedData", JSON.stringify(data));
+    sessionStorage.setItem("allData", JSON.stringify(data));
     return data;
   }
 }
@@ -56,6 +57,13 @@ async function renderAllData() {
       deleteItem(deleteEndpoint, item);
     });
   }
+}
+
+// Category Filter
+async function categoryFilter(category: string) {
+  const data = await getCachedData();
+  const filteredData = data.filter((item: any) => item.category === category);
+  return filteredData;
 }
 
 async function renderCategoryFilter(category: string, id: string) {
@@ -92,14 +100,13 @@ async function renderCategoryFilter(category: string, id: string) {
     tableBody?.appendChild(row);
     row?.appendChild(description);
     row?.appendChild(amount);
+    console.log(amount?.textContent)
   }
 }
 
-async function categoryFilter(category: string) {
-  const data = await getCachedData();
-  const filteredData = data.filter((item: any) => item.category === category);
-  return filteredData;
-}
+
+
+// New Item Form Submission
 
 formEl.addEventListener("submit", async function (event) {
   event.preventDefault();
