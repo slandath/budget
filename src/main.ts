@@ -1,7 +1,6 @@
 const getEndpoint = import.meta.env.VITE_GETAPIURL;
 const postEndpoint = import.meta.env.VITE_POSTAPIURL;
 const deleteEndpoint = import.meta.env.VITE_DELETEAPIURL;
-const categoryEndpoint = import.meta.env.VITE_CATEGORYURL;
 const formEl: HTMLFormElement = document.querySelector("#form")!;
 
 // Get All Data
@@ -33,10 +32,12 @@ async function getCachedData() {
 // Render data from cache
 async function renderAllData() {
   const data = await getCachedData();
+  let total = 0
   for (let i = 0; i < data.length; i++) {
     const start = document.querySelector("#allTableStart");
     const row = document.createElement("tr");
     const deleteBtn = document.createElement("button");
+    const subtotal = parseFloat(data[i].amount)
     row.id = data[i].id.toString();
     start?.appendChild(row);
     const category = document.createElement("td");
@@ -44,7 +45,8 @@ async function renderAllData() {
     const amount = document.createElement("td");
     category.textContent = data[i].category;
     description.textContent = data[i].description;
-    amount.textContent = data[i].amount;
+    amount.textContent = "$" + data[i].amount;
+    total += subtotal;
     deleteBtn.textContent = "Delete";
     row?.appendChild(category);
     row?.appendChild(description);
@@ -57,6 +59,21 @@ async function renderAllData() {
       deleteItem(deleteEndpoint, item);
     });
   }
+  const row = document.createElement("tr")
+  const label = document.createElement("td")
+  const tableTotal = document.createElement("td")
+  const spacer = document.createElement("td")
+  const spacer2 = document.createElement("td")
+  total.toString()
+  label.style.fontWeight = "bold"
+  label.textContent = "Total"
+  tableTotal.style.fontWeight = "bold"
+  tableTotal.textContent = "$" + total.toString();
+  document?.querySelector("#allTableStart")?.appendChild(row)
+  row?.appendChild(label)
+  row?.appendChild(spacer)  
+  row?.appendChild(tableTotal)
+  row?.appendChild(spacer2)
 }
 
 // Category Filter
@@ -85,6 +102,9 @@ async function renderCategoryFilter(category: string, id: string) {
   tableHeadRow?.appendChild(column2);
   table?.appendChild(tableBody);
 
+  // Subtotal Store
+  let total = 0
+
   // Set Attributes and Text
   column1.textContent = "Description";
   column2.textContent = "Amount";
@@ -94,17 +114,27 @@ async function renderCategoryFilter(category: string, id: string) {
     const row = document.createElement("tr");
     const description = document.createElement("td");
     const amount = document.createElement("td");
+    const subtotal = parseFloat(filteredData[i].amount)
     row.id = i.toString();
+    total += subtotal;
     description.textContent = filteredData[i].description;
-    amount.textContent = filteredData[i].amount;
+    amount.textContent = "$" + filteredData[i].amount;
     tableBody?.appendChild(row);
     row?.appendChild(description);
     row?.appendChild(amount);
-    console.log(amount?.textContent)
   }
+  const row = document.createElement("tr")
+  const label = document.createElement("td")
+  const tableTotal = document.createElement("td")
+  total.toString()
+  label.style.fontWeight = "bold"
+  label.textContent = "Total"
+  tableTotal.style.fontWeight = "bold"
+  tableTotal.textContent = "$" + total.toString();
+  tableBody?.appendChild(row)
+  row?.appendChild(label)
+  row?.appendChild(tableTotal)  
 }
-
-
 
 // New Item Form Submission
 
