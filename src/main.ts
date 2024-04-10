@@ -137,7 +137,6 @@ async function renderCategoryFilter(category: string, id: string) {
 }
 
 // New Item Form Submission
-
 formEl.addEventListener("submit", async function (event) {
   event.preventDefault();
   const formData = new FormData(formEl);
